@@ -230,18 +230,11 @@ extension AccuChekBluetoothManager: CBCentralManagerDelegate {
             return
         }
 
+        self.peripheral = nil
+        peripheralManager = nil
         cgmManager.state.isConnected = false
         cgmManager.notifyStateDidChange()
 
-        if cgmManager.state.deviceName == nil {
-            logger.warning("Prevent auto-reconnect -> unpaired device...")
-            return
-        }
-
-        connect(to: peripheral) { error in
-            if let error {
-                self.logger.error("Failed to reconnect: \(error)")
-            }
-        }
+        restoreConnection()
     }
 }

@@ -18,7 +18,13 @@ class CalibrationViewModel: ObservableObject {
         self.cgmManager = cgmManager
         self.unit = unit
         self.done = done
-        glucose = unit == .milligramsPerDeciliter ? 100 : 56
+
+        let defaultGlucose: UInt16 = unit == .milligramsPerDeciliter ? 100 : 56
+        if let cgmManager {
+            glucose = cgmManager.state.lastGlucoseValue ?? defaultGlucose
+        } else {
+            glucose = defaultGlucose
+        }
     }
 
     func calibrate() {
