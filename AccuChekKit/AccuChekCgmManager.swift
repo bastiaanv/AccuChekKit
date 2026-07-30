@@ -276,7 +276,7 @@ extension AccuChekCgmManager {
             }
 
             let event = PersistedCgmEvent(
-                date: self.state.cgmStartTime ?? Date.now,
+                date: type == .sensorStart ? self.state.cgmStartTime ?? Date.now : Date.now,
                 type: type,
                 deviceIdentifier: self.state.deviceName ?? "",
                 expectedLifetime: type == .sensorStart ? .days(14) : nil,
