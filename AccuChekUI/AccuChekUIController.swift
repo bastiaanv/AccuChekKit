@@ -14,7 +14,6 @@ class AccuChekUIController: UINavigationController, CGMManagerOnboarding, Comple
     var cgmManagerOnboardingDelegate: LoopKitUI.CGMManagerOnboardingDelegate?
     var completionDelegate: LoopKitUI.CompletionDelegate?
 
-    private let logger: AccuChekLogger
     private let cgmManager: AccuChekCgmManager
     private let displayGlucosePreference: DisplayGlucosePreference
     private let colorPalette: LoopUIColorPalette
@@ -25,8 +24,7 @@ class AccuChekUIController: UINavigationController, CGMManagerOnboarding, Comple
     init(
         cgmManager: AccuChekCgmManager? = nil,
         colorPalette: LoopUIColorPalette,
-        displayGlucosePreference: DisplayGlucosePreference,
-        allowDebugFeatures _: Bool
+        displayGlucosePreference: DisplayGlucosePreference
     )
     {
         if let cgmManager = cgmManager {
@@ -34,10 +32,9 @@ class AccuChekUIController: UINavigationController, CGMManagerOnboarding, Comple
         } else {
             self.cgmManager = AccuChekCgmManager(rawState: [:])
         }
+
         self.colorPalette = colorPalette
         self.displayGlucosePreference = displayGlucosePreference
-        logger = AccuChekLogger(category: "AccuChekUIController", cgmManager: self.cgmManager)
-
         super.init(navigationBarClass: UINavigationBar.self, toolbarClass: UIToolbar.self)
     }
 
@@ -172,8 +169,6 @@ class AccuChekUIController: UINavigationController, CGMManagerOnboarding, Comple
                 cgmManagerOnboardingDelegate.cgmManagerOnboarding(didOnboardCGMManager: self.cgmManager)
                 cgmManagerOnboardingDelegate.cgmManagerOnboarding(didCreateCGMManager: self.cgmManager)
                 self.completionDelegate?.completionNotifyingDidComplete(self)
-            } else {
-                self.logger.warning("Not onboarded -> no onboardDelegate...")
             }
         }
     }
