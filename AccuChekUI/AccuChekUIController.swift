@@ -11,16 +11,15 @@ enum AccuChekScreen {
 }
 
 class AccuChekUIController: UINavigationController, CGMManagerOnboarding, CompletionNotifying, UINavigationControllerDelegate {
-    private let logger = AccuChekLogger(category: "AccuChekUIController")
-
     var cgmManagerOnboardingDelegate: LoopKitUI.CGMManagerOnboardingDelegate?
     var completionDelegate: LoopKitUI.CompletionDelegate?
 
-    private var cgmManager: AccuChekCgmManager
-    private var displayGlucosePreference: DisplayGlucosePreference
-    private var colorPalette: LoopUIColorPalette
-    private var screenStack = [AccuChekScreen]()
+    private let logger: AccuChekLogger
+    private let cgmManager: AccuChekCgmManager
+    private let displayGlucosePreference: DisplayGlucosePreference
+    private let colorPalette: LoopUIColorPalette
 
+    private var screenStack = [AccuChekScreen]()
     private var scanResult: ScanResult?
 
     init(
@@ -37,6 +36,8 @@ class AccuChekUIController: UINavigationController, CGMManagerOnboarding, Comple
         }
         self.colorPalette = colorPalette
         self.displayGlucosePreference = displayGlucosePreference
+        logger = AccuChekLogger(category: "AccuChekUIController", cgmManager: self.cgmManager)
+
         super.init(navigationBarClass: UINavigationBar.self, toolbarClass: UIToolbar.self)
     }
 

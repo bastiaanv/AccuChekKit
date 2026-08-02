@@ -1,8 +1,6 @@
 import CoreBluetooth
 
 class ScanResult {
-    private let logger = AccuChekLogger(category: "ScanResult")
-
     public let deviceName: String
     public let peripheral: CBPeripheral
     public let hasAcsSupport: Bool
@@ -13,7 +11,6 @@ class ScanResult {
 
     init?(peripheral: CBPeripheral, advertismentData: [String: Any]) {
         guard let deviceName = peripheral.name else {
-            logger.warning("Empty device name")
             return nil
         }
 

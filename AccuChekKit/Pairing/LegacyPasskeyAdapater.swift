@@ -2,13 +2,14 @@ import CoreBluetooth
 import Foundation
 
 class LegacyPasskeyAdapater: PairingAdapter {
-    var logger = AccuChekLogger(category: "LegacyPasskeyAdapater")
+    var logger: AccuChekLogger
     var peripheralManager: AccuChekPeripheralManager
     var cgmManager: AccuChekCgmManager
 
     init(cgmManager: AccuChekCgmManager, peripheralManager: AccuChekPeripheralManager) {
         self.peripheralManager = peripheralManager
         self.cgmManager = cgmManager
+        logger = AccuChekLogger(category: "LegacyPasskeyAdapater", cgmManager: cgmManager)
     }
 
     func pair() -> Bool {

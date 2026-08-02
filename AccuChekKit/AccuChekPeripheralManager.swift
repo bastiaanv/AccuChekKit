@@ -3,7 +3,7 @@ import CryptoKit
 import UIKit
 
 class AccuChekPeripheralManager: NSObject {
-    private let logger = AccuChekLogger(category: "PeripheralManager")
+    private let logger: AccuChekLogger
 
     private var peripheral: CBPeripheral
     private let cgmManager: AccuChekCgmManager
@@ -21,6 +21,7 @@ class AccuChekPeripheralManager: NSObject {
     init(peripheral: CBPeripheral, cgmManager: AccuChekCgmManager, completion: ((AccuChekError?) -> Void)?) {
         self.peripheral = peripheral
         self.cgmManager = cgmManager
+        logger = AccuChekLogger(category: "PeripheralManager", cgmManager: cgmManager)
         connecionCompletion = completion
 
         if let key = cgmManager.state.aesKey {
@@ -37,6 +38,7 @@ class AccuChekPeripheralManager: NSObject {
             return nil
         }
 
+        logger.debug("Reading from \(characteristic.uuid.uuidString)", type: .send)
         let readQ = AccuChekDispatchGroup()
         readQ.enter()
         readQueue = (readQ, characteristicUUID)
@@ -67,7 +69,7 @@ class AccuChekPeripheralManager: NSObject {
         }
 
         for item in segmentData(data: packet.getRequest(), mtu: mtu) {
-            logger.debug("Writing \(item.hexString()) to \(characteristic.uuid.uuidString)")
+            logger.debug("Writing \(item.hexString()) to \(characteristic.uuid.uuidString)", type: .send)
             peripheral.writeValue(
                 item,
                 for: characteristic,
@@ -80,7 +82,7 @@ class AccuChekPeripheralManager: NSObject {
             // Wait for response or timeout timer...
             let result = writeQ.wait(timeout: .now() + .seconds(10))
             guard let result else {
-                logger.error("Timeout has been hit")
+                logger.error("Timeout has been hit", type: .send)
                 writeQueue = nil
                 return false
             }
@@ -232,7 +234,7 @@ extension AccuChekPeripheralManager: CBPeripheralDelegate {
             return
         }
 
-        logger.debug("Recieved data: \(data.hexString()), characteristic: \(characteristic.uuid.uuidString)")
+        logger.debug("Recieved data: \(data.hexString()), characteristic: \(characteristic.uuid.uuidString)", type: .receive)
         if let (readQueue, readCharacteristic) = readQueue, readCharacteristic == characteristic.uuid {
             readQueue.leave(Data(data))
             return
@@ -266,6 +268,6 @@ extension AccuChekPeripheralManager: CBPeripheralDelegate {
             return
         }
 
-        logger.warning("Not handled above message...")
+        logger.warning("Not handled above message...", type: .receive)
     }
 }
