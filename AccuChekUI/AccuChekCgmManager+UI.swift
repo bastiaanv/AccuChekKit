@@ -6,13 +6,12 @@ extension AccuChekCgmManager: CGMManagerUI {
         bluetoothProvider _: BluetoothProvider,
         displayGlucosePreference: DisplayGlucosePreference,
         colorPalette: LoopUIColorPalette,
-        allowDebugFeatures: Bool,
+        allowDebugFeatures _: Bool,
         prefersToSkipUserInteraction _: Bool = false
     ) -> SetupUIResult<CGMManagerViewController, CGMManagerUI> {
         let vc = AccuChekUIController(
             colorPalette: colorPalette,
-            displayGlucosePreference: displayGlucosePreference,
-            allowDebugFeatures: allowDebugFeatures
+            displayGlucosePreference: displayGlucosePreference
         )
         return .userInteractionRequired(vc)
     }
@@ -21,13 +20,12 @@ extension AccuChekCgmManager: CGMManagerUI {
         bluetoothProvider _: BluetoothProvider,
         displayGlucosePreference: DisplayGlucosePreference,
         colorPalette: LoopUIColorPalette,
-        allowDebugFeatures: Bool
+        allowDebugFeatures _: Bool
     ) -> CGMManagerViewController {
         AccuChekUIController(
             cgmManager: self,
             colorPalette: colorPalette,
-            displayGlucosePreference: displayGlucosePreference,
-            allowDebugFeatures: allowDebugFeatures
+            displayGlucosePreference: displayGlucosePreference
         )
     }
 

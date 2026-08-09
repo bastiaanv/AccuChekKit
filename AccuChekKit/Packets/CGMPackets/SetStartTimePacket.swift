@@ -12,7 +12,6 @@ class SetStartTimePacket: AccuChekBasePacket {
 
     var receivedResponse: Bool = false
 
-    private let logger = AccuChekLogger(category: "SetStartTimePacket")
     let date: Date
     init(date: Date) {
         self.date = date
@@ -30,7 +29,6 @@ class SetStartTimePacket: AccuChekBasePacket {
             let minute = components.minute,
             let second = components.second
         else {
-            logger.error("Failed to parse date components...")
             return Data()
         }
 

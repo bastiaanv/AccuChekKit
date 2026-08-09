@@ -17,7 +17,7 @@ public class AccuChekCgmManager: CGMManager {
     private let delegate = WeakSynchronizedDelegate<CGMManagerDelegate>()
     private let stateObservers = WeakSynchronizedSet<StateObserver>()
 
-    private let logger = AccuChekLogger(category: "CgmManager")
+    private let logger: AccuChekLogger
     let bluetooth: AccuChekBluetoothManager
     var state: AccuChekState
     public var rawState: RawStateValue {
@@ -35,8 +35,10 @@ public class AccuChekCgmManager: CGMManager {
     public required init(rawState: RawStateValue) {
         state = AccuChekState(rawValue: rawState)
         bluetooth = AccuChekBluetoothManager()
+        logger = AccuChekLogger(category: "CgmManager", cgmManager: nil)
 
         bluetooth.cgmManager = self
+        logger.cgmManager = self
     }
 
     public weak var cgmManagerDelegate: CGMManagerDelegate? {
@@ -256,6 +258,16 @@ public class AccuChekCgmManager: CGMManager {
                 cgmManagerDelegate.issueAlert($0)
             }
         }
+    }
+
+    func sendLog(_ message: String, type: DeviceLogEntryType = .send) {
+        cgmManagerDelegate?.deviceManager(
+            self,
+            logEventForDeviceIdentifier: state.sensorInfo?.serialNumber ?? "",
+            type: type,
+            message: message,
+            completion: nil
+        )
     }
 }
 

@@ -49,7 +49,7 @@ class SettingsViewModel: ObservableObject {
         return formatter
     }()
 
-    private let logger = AccuChekLogger(category: "SettingsViewModel")
+    private let logger: AccuChekLogger
     private let cgmManager: AccuChekCgmManager
     let doCalibration: () -> Void
     private let doPairing: () -> Void
@@ -60,6 +60,7 @@ class SettingsViewModel: ObservableObject {
         doPairing: @escaping () -> Void,
         deleteCGM: @escaping () -> Void
     ) {
+        logger = AccuChekLogger(category: "SettingsViewModel", cgmManager: cgmManager)
         self.cgmManager = cgmManager
         self.doCalibration = doCalibration
         self.doPairing = doPairing

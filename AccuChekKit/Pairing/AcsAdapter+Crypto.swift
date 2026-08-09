@@ -21,10 +21,11 @@ extension AcsAdapter {
 
         let (privateKey, fixedNoncePrefix) = generateKeyPair()
 
-        guard let certificate = cgmManager.state.certificate else {
-            logger.error("No certificate available...")
-            return false
-        }
+//        guard let certificate = cgmManager.state.certificate else {
+//            logger.error("No certificate available...")
+//            return false
+//        }
+        let certificateDer = Data()
 
         let noncePacket = SetAcClientNonceFixedPacket(aesGcmDescriptor: aesGcmDescriptor, fixedNonce: fixedNoncePrefix)
         if !peripheralManager.write(packet: noncePacket, service: CBUUID.ACS_SERVICE, characteristic: CBUUID.ACS_CONTROL_POINT) {
@@ -42,7 +43,7 @@ extension AcsAdapter {
             return false
         }
 
-        let keyExchangeEcdhPacket = KeyExchangeEcdhPacket(decriptor: ecdhDescriptor, certificate: certificate.der)
+        let keyExchangeEcdhPacket = KeyExchangeEcdhPacket(decriptor: ecdhDescriptor, certificate: certificateDer)
         if !peripheralManager.write(
             packet: keyExchangeEcdhPacket,
             service: CBUUID.ACS_SERVICE,

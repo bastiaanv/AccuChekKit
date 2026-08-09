@@ -11,23 +11,20 @@ enum AccuChekScreen {
 }
 
 class AccuChekUIController: UINavigationController, CGMManagerOnboarding, CompletionNotifying, UINavigationControllerDelegate {
-    private let logger = AccuChekLogger(category: "AccuChekUIController")
-
     var cgmManagerOnboardingDelegate: LoopKitUI.CGMManagerOnboardingDelegate?
     var completionDelegate: LoopKitUI.CompletionDelegate?
 
-    private var cgmManager: AccuChekCgmManager
-    private var displayGlucosePreference: DisplayGlucosePreference
-    private var colorPalette: LoopUIColorPalette
-    private var screenStack = [AccuChekScreen]()
+    private let cgmManager: AccuChekCgmManager
+    private let displayGlucosePreference: DisplayGlucosePreference
+    private let colorPalette: LoopUIColorPalette
 
+    private var screenStack = [AccuChekScreen]()
     private var scanResult: ScanResult?
 
     init(
         cgmManager: AccuChekCgmManager? = nil,
         colorPalette: LoopUIColorPalette,
-        displayGlucosePreference: DisplayGlucosePreference,
-        allowDebugFeatures _: Bool
+        displayGlucosePreference: DisplayGlucosePreference
     )
     {
         if let cgmManager = cgmManager {
@@ -35,6 +32,7 @@ class AccuChekUIController: UINavigationController, CGMManagerOnboarding, Comple
         } else {
             self.cgmManager = AccuChekCgmManager(rawState: [:])
         }
+
         self.colorPalette = colorPalette
         self.displayGlucosePreference = displayGlucosePreference
         super.init(navigationBarClass: UINavigationBar.self, toolbarClass: UIToolbar.self)
@@ -171,8 +169,6 @@ class AccuChekUIController: UINavigationController, CGMManagerOnboarding, Comple
                 cgmManagerOnboardingDelegate.cgmManagerOnboarding(didOnboardCGMManager: self.cgmManager)
                 cgmManagerOnboardingDelegate.cgmManagerOnboarding(didCreateCGMManager: self.cgmManager)
                 self.completionDelegate?.completionNotifyingDidComplete(self)
-            } else {
-                self.logger.warning("Not onboarded -> no onboardDelegate...")
             }
         }
     }

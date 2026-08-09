@@ -62,8 +62,7 @@ struct AccuChekState: RawRepresentable, Equatable {
     public var sensorInfo: SensorInfo?
     public var deviceName: String?
     public var previousDeviceName: String?
-    public var serialNumber: String?
-    public var certificate: Certificate?
+//    public var certificate: Certificate?
 
     public var cgmStatus: [SensorStatusEnum]
     public var cgmStatusTimestamp: Date?
@@ -104,7 +103,6 @@ struct AccuChekState: RawRepresentable, Equatable {
         isConnected = false
         mtu = rawValue["mtu"] as? UInt16 ?? 20
         deviceName = rawValue["deviceName"] as? String
-        serialNumber = rawValue["serialNumber"] as? String
         cgmStatusTimestamp = rawValue["cgmStatusTimestamp"] as? Date
         readingsUnavailable = rawValue["readingsUnavailable"] as? Bool ?? false
         pinCode = rawValue["pinCode"] as? String
@@ -142,16 +140,6 @@ struct AccuChekState: RawRepresentable, Equatable {
         if let sensorInfoRaw = rawValue["sensorInfo"] as? SensorInfo.RawValue {
             sensorInfo = SensorInfo(rawValue: sensorInfoRaw)
         }
-
-        do {
-            if let certificateRaw = rawValue["certificate"] as? Data {
-                certificate = try JSONDecoder().decode(Certificate.self, from: certificateRaw)
-            } else {
-                certificate = nil
-            }
-        } catch {
-            certificate = nil
-        }
     }
 
     var rawValue: CGMManager.RawStateValue {
@@ -160,7 +148,6 @@ struct AccuChekState: RawRepresentable, Equatable {
         raw["onboarded"] = onboarded
         raw["mtu"] = mtu
         raw["deviceName"] = deviceName
-        raw["serialNumber"] = serialNumber
         raw["pinCode"] = pinCode
         raw["keyAgreementPrivate"] = keyAgreementPrivate
         raw["aesKey"] = aesKey
@@ -181,10 +168,6 @@ struct AccuChekState: RawRepresentable, Equatable {
         raw["previousDeviceName"] = previousDeviceName
         raw["sensorInfo"] = sensorInfo?.rawValue
 
-        do {
-            raw["certificate"] = try JSONEncoder().encode(certificate)
-        } catch {}
-
         return raw
     }
 
@@ -193,7 +176,7 @@ struct AccuChekState: RawRepresentable, Equatable {
             "* onboarded: \(onboarded)",
             "* mtu: \(mtu)",
             "* deviceName: \(String(describing: deviceName))",
-            "* serialNumber: \(String(describing: serialNumber))",
+            "* sensorInfo: \(String(describing: sensorInfo))",
             "* isConnected: \(isConnected)",
             "* cgmStartTime: \(String(describing: cgmStartTime))",
             "* cgmStatus: \(String(describing: cgmStatus))",
