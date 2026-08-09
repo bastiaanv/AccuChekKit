@@ -19,6 +19,18 @@ class CgmMeasurement {
     }
 
     init(_ data: Data) {
+        guard data.count >= 6 else {
+            flags = 0
+            glucoseInMgDl = 0
+            timeOffset = 0
+            statusValues = Data()
+            trend = nil
+            quality = nil
+            isValid = false
+            condition = nil
+            return
+        }
+
         flags = data[1]
         timeOffset = TimeInterval.minutes(Double(data.getUInt16(offset: 4)))
 
@@ -88,9 +100,9 @@ class CgmMeasurement {
         "[CgmMeasurement] glucoseInMgDl: \(glucoseInMgDl)mg/dl, timeOffset: \(timeOffset), flags=\(flags), statusValues=\(statusValues.hexString()), trend=\(String(describing: trend)), quality=\(String(describing: quality))"
     }
 
-    func getTrend() -> GlucoseTrend? {
+    func getTrend() -> GlucoseTrend {
         guard let trend else {
-            return nil
+            return .flat
         }
 
         switch trend {
@@ -104,11 +116,8 @@ class CgmMeasurement {
             return .flat
         case _ where trend <= 2:
             return .up
-        case _ where trend <= 3.5:
-            return .upUp
         default:
-
-            return .flat
+            return .upUp
         }
     }
 

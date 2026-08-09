@@ -98,14 +98,17 @@ public class AccuChekCgmManager: CGMManager {
     }
 
     internal func notifyNewData(measurements: [CgmMeasurement]) {
-        guard let lastMeasurement = state.lastGlucoseDate, let startTime = state.cgmStartTime else {
+        guard let startTime = state.cgmStartTime else {
             return
         }
 
         // Prevent duplicated measurements
-        let measurements = measurements.filter { startTime.addingTimeInterval($0.timeOffset) > lastMeasurement }
-        guard !measurements.isEmpty else {
-            return
+        var measurements = measurements
+        if let lastMeasurement = state.lastGlucoseDate {
+            measurements = measurements.filter { startTime.addingTimeInterval($0.timeOffset) > lastMeasurement }
+            guard !measurements.isEmpty else {
+                return
+            }
         }
 
         // If the sensor has not been calibrated twice
@@ -132,6 +135,7 @@ public class AccuChekCgmManager: CGMManager {
             state.lastGlucoseValue = lastMeasurement.glucoseInMgDl
             state.lastGlucoseDate = startTime.addingTimeInterval(lastMeasurement.timeOffset)
             state.lastGlucoseOffset = lastMeasurement.timeOffset
+            state.lastGlucoseTrend = lastMeasurement.getTrend()
             notifyStateDidChange()
         }
 

@@ -19,7 +19,7 @@ extension PairingAdapter {
             return
         }
 
-        if let sensorInfo = getSensorInfo() {
+        if cgmManager.state.sensorInfo == nil, let sensorInfo = getSensorInfo() {
             cgmManager.state.sensorInfo = sensorInfo
             cgmManager.notifyStateDidChange()
         }

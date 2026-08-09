@@ -18,10 +18,18 @@ extension Data {
     }
 
     func getUInt16(offset: Int) -> UInt16 {
-        UInt16(self[offset + 1]) << 8 | UInt16(self[offset])
+        guard self.count > offset + 1 else {
+            return 0
+        }
+
+        return UInt16(self[offset + 1]) << 8 | UInt16(self[offset])
     }
 
     func getDouble(offset: Int) -> Double {
+        guard self.count > offset + 1 else {
+            return 0
+        }
+
         let value = Int16(self[offset + 1]) << 8 | Int16(self[offset])
         return getMantissa(value) * pow(10.0, Double(getExponent(value)))
     }
