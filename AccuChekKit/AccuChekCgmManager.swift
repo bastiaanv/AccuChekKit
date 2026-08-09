@@ -263,7 +263,7 @@ public class AccuChekCgmManager: CGMManager {
     func sendLog(_ message: String, type: DeviceLogEntryType = .send) {
         cgmManagerDelegate?.deviceManager(
             self,
-            logEventForDeviceIdentifier: state.serialNumber ?? "",
+            logEventForDeviceIdentifier: state.sensorInfo?.serialNumber ?? "",
             type: type,
             message: message,
             completion: nil
