@@ -8,7 +8,7 @@ protocol StateObserver: AnyObject {
 
 public class AccuChekCgmManager: CGMManager {
     public static var pluginIdentifier: String = "AccuChek"
-    public var localizedTitle: String = "Accu-Chek SmartGuide CGM"
+    public var localizedTitle: String = "Accu-Chek SmartGuide"
 
     public let providesBLEHeartbeat: Bool = true
     public let shouldSyncToRemoteService: Bool = true
