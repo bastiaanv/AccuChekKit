@@ -1,7 +1,7 @@
 import CoreBluetooth
 
 class AcsAdapter: PairingAdapter {
-    internal let logger: AccuChekLogger
+    internal let logger = AccuChekLogger(category: "AcsAdapter")
     internal let cgmManager: AccuChekCgmManager
     internal let peripheralManager: AccuChekPeripheralManager
 
@@ -11,7 +11,6 @@ class AcsAdapter: PairingAdapter {
     init(cgmManager: AccuChekCgmManager, peripheralManager: AccuChekPeripheralManager) {
         self.cgmManager = cgmManager
         self.peripheralManager = peripheralManager
-        logger = AccuChekLogger(category: "AcsAdapter", cgmManager: cgmManager)
     }
 
     func pair() -> Bool {

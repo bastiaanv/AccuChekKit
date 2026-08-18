@@ -10,12 +10,11 @@ class CalibrationViewModel: ObservableObject {
     let allowedGlucoseValuesMgDl = Array(UInt16(60) ... UInt16(400))
     let allowedGlucoseValuesMmolL = Array(UInt16(33) ... UInt16(220))
 
-    private let logger: AccuChekLogger
+    private let logger  = AccuChekLogger(category: "CalibrationViewModel")
     private let cgmManager: AccuChekCgmManager?
     private let done: () -> Void
     private let unit: HKUnit
     init(cgmManager: AccuChekCgmManager, _ unit: HKUnit, _ done: @escaping () -> Void) {
-        logger = AccuChekLogger(category: "CalibrationViewModel", cgmManager: cgmManager)
         self.cgmManager = cgmManager
         self.unit = unit
         self.done = done

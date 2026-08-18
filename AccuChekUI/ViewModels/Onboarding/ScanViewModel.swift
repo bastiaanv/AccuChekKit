@@ -9,11 +9,10 @@ class ScanViewModel: ObservableObject {
     @Published var showUnsupportedDeviceAlert = false
     @Published var isShowingPlacement = false
 
-    private let logger: AccuChekLogger
+    private let logger = AccuChekLogger(category: "ScanViewModel")
     private let cgmManager: AccuChekCgmManager
     private let nextStep: (ScanResult) -> Void
     init(cgmManager: AccuChekCgmManager, nextStep: @escaping (ScanResult) -> Void) {
-        logger = AccuChekLogger(category: "ScanViewModel", cgmManager: cgmManager)
         self.cgmManager = cgmManager
         self.nextStep = nextStep
 

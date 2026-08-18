@@ -1,17 +1,13 @@
 import CoreBluetooth
 
 class AccuChekBluetoothManager: NSObject {
-    private let logger = AccuChekLogger(category: "BluetoothManager", cgmManager: nil)
+    private let logger = AccuChekLogger(category: "BluetoothManager")
     private let managerQueue = DispatchQueue(label: "com.bastiaanv.accuchek.bluetoothManagerQueue", qos: .unspecified)
 
     private var manager: CBCentralManager?
     private var peripheral: CBPeripheral?
     private var peripheralManager: AccuChekPeripheralManager?
-    public var cgmManager: AccuChekCgmManager? {
-        didSet {
-            logger.cgmManager = cgmManager
-        }
-    }
+    public var cgmManager: AccuChekCgmManager?
 
     private var scanCompletion: ((ScanResult) -> Void)?
     private var isScanDeferred = false
