@@ -72,10 +72,10 @@ public class AccuChekCgmManager: CGMManager {
         HKDevice(
             name: state.deviceName,
             manufacturer: "Roche Diabetes Care GmbH",
-            model: nil,
-            hardwareVersion: nil,
-            firmwareVersion: nil,
-            softwareVersion: nil,
+            model: state.sensorInfo?.model,
+            hardwareVersion: state.sensorInfo?.hardwareRevision,
+            firmwareVersion: state.sensorInfo?.firmwareRevision,
+            softwareVersion: state.sensorInfo?.softwareRevision,
             localIdentifier: nil,
             udiDeviceIdentifier: nil
         )
@@ -166,6 +166,12 @@ public class AccuChekCgmManager: CGMManager {
 
         // Ignore response, since no response will be given by CGM
         _ = bluetooth.write(packet: calibratePacket, service: CBUUID.CGM_SERVICE, characteristic: CBUUID.CGM_CONTROL_POINT)
+        
+        delegate.notify { delegate in
+            delegate?.cgmManager(self,hasNew: .newData([
+                NewGlucoseSample(cgmManager: self, calibrationValue: glucose, dateTime: Date.now)
+            ]))
+        }
 
         let getCalibrationPacket = GetCalibrationPacket(recordIndex: 0xFFFF)
         guard bluetooth
