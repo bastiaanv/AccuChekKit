@@ -3,11 +3,10 @@ import LoopKit
 import SwiftUI
 
 class PairingViewModel: ObservableObject {
-    private let logger: AccuChekLogger
+    private let logger = AccuChekLogger(category: "PairingViewModel")
     private let cgmManager: AccuChekCgmManager
     private let nextStep: () -> Void
     init(_ cgmManager: AccuChekCgmManager, scanResult: ScanResult?, nextStep: @escaping () -> Void) {
-        logger = AccuChekLogger(category: "PairingViewModel", cgmManager: cgmManager)
         self.cgmManager = cgmManager
         self.nextStep = nextStep
 
