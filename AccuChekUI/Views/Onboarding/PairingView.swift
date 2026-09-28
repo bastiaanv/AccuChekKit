@@ -39,5 +39,14 @@ struct PairingView: View {
                     .font(.footnote)
             }
         }
+        .alert(isPresented: $viewModel.modelUnsupported) {
+            Alert(
+                title: Text("Warning: Untested device"),
+                message: Text("This is a untested device model. Please be careful! Share any issues with Trio discord"),
+                dismissButton: .default(Text("I understand")) {
+                   viewModel.nextStep()
+               }
+            )
+        }
     }
 }
