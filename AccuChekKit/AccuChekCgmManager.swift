@@ -19,7 +19,7 @@ public class AccuChekCgmManager: CGMManager {
 
     private let logger: AccuChekLogger
     let bluetooth: AccuChekBluetoothManager
-    var state: AccuChekState
+    public var state: AccuChekState
     public var rawState: RawStateValue {
         state.rawValue
     }

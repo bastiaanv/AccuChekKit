@@ -19,7 +19,7 @@ public struct GlucoseDisplay: GlucoseDisplayable {
     }
 }
 
-enum CalibrationPhase: UInt8 {
+public enum CalibrationPhase: UInt8 {
     case warmingup
     case calibratedOnce
     case done
@@ -52,7 +52,7 @@ enum CalibrationPhase: UInt8 {
     }
 }
 
-struct AccuChekState: RawRepresentable, Equatable {
+public struct AccuChekState: RawRepresentable, Equatable {
     public typealias RawValue = CGMManager.RawStateValue
 
     public var onboarded: Bool
@@ -78,6 +78,13 @@ struct AccuChekState: RawRepresentable, Equatable {
     public var aesNonce: Data?
 
     public var cgmStartTime: Date?
+    public var cgmWarmupCompleted: Date? {
+        guard let cgmStartTime else {
+            return nil
+        }
+
+        return cgmStartTime.addingTimeInterval(.hours(1))
+    }
     public var cgmEndTime: Date? {
         guard let cgmStartTime else {
             return nil
@@ -98,7 +105,7 @@ struct AccuChekState: RawRepresentable, Equatable {
     public var expiresAt: Date?
     public var refreshToken: String?
 
-    init(rawValue: CGMManager.RawStateValue) {
+    public init(rawValue: CGMManager.RawStateValue) {
         onboarded = rawValue["onboarded"] as? Bool ?? false
         isConnected = false
         mtu = rawValue["mtu"] as? UInt16 ?? 20
@@ -142,7 +149,7 @@ struct AccuChekState: RawRepresentable, Equatable {
         }
     }
 
-    var rawValue: CGMManager.RawStateValue {
+    public var rawValue: CGMManager.RawStateValue {
         var raw: CGMManager.RawStateValue = [:]
 
         raw["onboarded"] = onboarded

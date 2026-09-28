@@ -1,14 +1,14 @@
 import Foundation
 
-struct SensorInfo: RawRepresentable, Equatable {
+public struct SensorInfo: RawRepresentable, Equatable {
     public typealias RawValue = [String: String]
 
-    let manufacturer: String
-    let model: String
-    let serialNumber: String
-    let firmwareRevision: String
-    let hardwareRevision: String
-    let softwareRevision: String
+    public let manufacturer: String
+    public let model: String
+    public let serialNumber: String
+    public let firmwareRevision: String
+    public let hardwareRevision: String
+    public let softwareRevision: String
 
     init(
         manufacturer: String,
@@ -26,7 +26,7 @@ struct SensorInfo: RawRepresentable, Equatable {
         self.softwareRevision = softwareRevision
     }
 
-    init?(rawValue: [String: String]) {
+    public init?(rawValue: [String: String]) {
         guard
             let manufacturer = rawValue["manufacturer"],
             let model = rawValue["model"],
@@ -46,7 +46,7 @@ struct SensorInfo: RawRepresentable, Equatable {
         self.softwareRevision = softwareRevision
     }
 
-    var rawValue: [String: String] {
+    public var rawValue: [String: String] {
         var raw: [String: String] = [:]
         raw["manufacturer"] = manufacturer
         raw["model"] = model

@@ -33,7 +33,7 @@ class SensorStatus {
     }
 }
 
-enum SensorStatusEnum: UInt8 {
+public enum SensorStatusEnum: UInt8 {
     case sessionStopped = 0
     case deviceBatteryLow = 1
     case sensorTypeIncorrectForDevice = 2

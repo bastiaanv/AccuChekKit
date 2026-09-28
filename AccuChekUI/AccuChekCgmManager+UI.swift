@@ -53,6 +53,14 @@ extension AccuChekCgmManager: CGMManagerUI {
                 state: notification.backgroundContent.title == calibrationTitle ? .warning : .critical
             )
         }
+        
+        if state.calibrationPhase != .done {
+            return AccuChekDeviceStatusHighlight(
+                localizedMessage: String(localized: "Sensor\nWarmup", comment: "title sensor warming up"),
+                imageName: "clock",
+                state: .normalCGM
+            )
+        }
 
         return nil
     }
