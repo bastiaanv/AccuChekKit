@@ -738,7 +738,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalibreer opnieuw bij %@ om uw sensor in de therapiemodus te houden."
+            "value" : "Kalibreer opnieuw bij %@ om je sensor in de therapiemodus te houden."
           }
         },
         "pl" : {
@@ -898,7 +898,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalibreer opnieuw om uw sensor in de therapiemodus te houden."
+            "value" : "Kalibreer opnieuw om je sensor in de therapiemodus te houden."
           }
         },
         "pl" : {
@@ -1058,7 +1058,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kalibreer nu om uw sensor in de therapiemodus te houden."
+            "value" : "Kalibreer nu om je sensor in de therapiemodus te houden."
           }
         },
         "pl" : {
@@ -3644,7 +3644,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gooi de draaidop niet weg voordat het koppelen is voltooid! Tijdens het koppelen hebt u het serienummer en de pincode van de sensor nodig."
+            "value" : "Gooi de draaidop niet weg voordat het koppelen is voltooid! Tijdens het koppelen heb je het serienummer en de pincode van de sensor nodig."
           }
         },
         "pl" : {
@@ -4128,7 +4128,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er wordt verbinding gemaakt met uw sensor."
+            "value" : "Er wordt verbinding gemaakt met je sensor."
           }
         },
         "pl" : {
@@ -10098,7 +10098,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vervang uw sensor nu"
+            "value" : "Vervang je sensor nu"
           }
         },
         "pl" : {
@@ -17348,7 +17348,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Als u op Doorgaan klikt, wordt uw Accu Chek CGM gescand. Zorg ervoor dat je de PIN-code bij de hand hebt voor het koppelen met je telefoon!"
+            "value" : "Als je op Doorgaan klikt, wordt je Accu Chek CGM gescand. Zorg ervoor dat je de PIN-code bij de hand hebt voor het koppelen met je telefoon!"
           }
         },
         "pl" : {
@@ -17670,7 +17670,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "U hebt de draaidop straks nodig om het serienummer (SN) van de sensor te controleren en uw 6-cijferige pincode te krijgen."
+            "value" : "Je hebt de draaidop straks nodig om het serienummer (SN) van de sensor te controleren en je 6-cijferige pincode te krijgen."
           }
         },
         "pl" : {
@@ -17830,7 +17830,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De batterij van uw sensor raakt leeg. Plaats zo snel mogelijk een nieuwe."
+            "value" : "De batterij van je sensor raakt leeg. Plaats zo snel mogelijk een nieuwe."
           }
         },
         "pl" : {
@@ -17990,7 +17990,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "De geldigheidsduur van uw sensor is verstreken. Start zo snel mogelijk een nieuwe."
+            "value" : "De geldigheidsduur van je sensor is verstreken. Start zo snel mogelijk een nieuwe."
           }
         },
         "pl" : {
@@ -18310,7 +18310,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uw sensor werkt naar behoren."
+            "value" : "Je sensor werkt naar behoren."
           }
         },
         "pl" : {
@@ -18470,7 +18470,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uw sensor werkt niet goed. Plaats zo snel mogelijk een nieuwe."
+            "value" : "Je sensor werkt niet goed. Plaats zo snel mogelijk een nieuwe."
           }
         },
         "pl" : {
@@ -18630,7 +18630,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uw sensor bevindt zich buiten het toegestane temperatuurbereik. Breng het apparaat naar een plek waar de temperatuur weer normaal wordt."
+            "value" : "Je sensor bevindt zich buiten het toegestane temperatuurbereik. Breng het apparaat naar een plek waar de temperatuur weer normaal wordt."
           }
         },
         "pl" : {
@@ -18790,7 +18790,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uw sensor is aan het opwarmen."
+            "value" : "Je sensor is aan het opwarmen."
           }
         },
         "pl" : {
@@ -18950,7 +18950,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uw sensor is aan het opwarmen. Eerste kalibratie bij %@."
+            "value" : "Je sensor is aan het opwarmen. Eerste kalibratie bij %@."
           }
         },
         "pl" : {
