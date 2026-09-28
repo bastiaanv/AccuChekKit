@@ -4,12 +4,11 @@ import SwiftUI
 
 class PairingViewModel: ObservableObject {
     @Published var modelUnsupported = false
-    
-    private let logger: AccuChekLogger
+
+    private let logger = AccuChekLogger(category: "PairingViewModel")
     private let cgmManager: AccuChekCgmManager
     let nextStep: () -> Void
     init(_ cgmManager: AccuChekCgmManager, scanResult: ScanResult?, nextStep: @escaping () -> Void) {
-        logger = AccuChekLogger(category: "PairingViewModel", cgmManager: cgmManager)
         self.cgmManager = cgmManager
         self.nextStep = nextStep
 

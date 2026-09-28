@@ -18,7 +18,7 @@ extension Data {
     }
 
     func getUInt16(offset: Int) -> UInt16 {
-        guard self.count > offset + 1 else {
+        guard count > offset + 1 else {
             return 0
         }
 
@@ -26,7 +26,7 @@ extension Data {
     }
 
     func getDouble(offset: Int) -> Double {
-        guard self.count > offset + 1 else {
+        guard count > offset + 1 else {
             return 0
         }
 

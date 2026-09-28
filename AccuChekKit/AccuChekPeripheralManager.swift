@@ -3,7 +3,7 @@ import CryptoKit
 import UIKit
 
 class AccuChekPeripheralManager: NSObject {
-    private let logger: AccuChekLogger
+    private let logger = AccuChekLogger(category: "PeripheralManager")
 
     private var peripheral: CBPeripheral
     private let cgmManager: AccuChekCgmManager
@@ -21,7 +21,6 @@ class AccuChekPeripheralManager: NSObject {
     init(peripheral: CBPeripheral, cgmManager: AccuChekCgmManager, completion: ((AccuChekError?) -> Void)?) {
         self.peripheral = peripheral
         self.cgmManager = cgmManager
-        logger = AccuChekLogger(category: "PeripheralManager", cgmManager: cgmManager)
         connecionCompletion = completion
 
         if let key = cgmManager.state.aesKey {

@@ -4,12 +4,11 @@ import OSLog
 
 class AccuChekLogger {
     private let logger: Logger
-    var cgmManager: AccuChekCgmManager?
     private let writer = AccuChekLogWriter.shared
+    public static var cgmManager: AccuChekCgmManager?
 
-    init(category: String, cgmManager: AccuChekCgmManager?) {
+    init(category: String) {
         logger = Logger(subsystem: "com.bastiaanv.AccuChekKit", category: category)
-        self.cgmManager = cgmManager
     }
 
     public func debug(
@@ -22,7 +21,7 @@ class AccuChekLogger {
         let message = "\(file.file) - \(function)#\(line): \(msg)"
         logger.debug("\(message, privacy: .public)")
         writeToFile(message, .debug)
-        cgmManager?.sendLog("[DEBUG] \(message)", type: type)
+        writeToCgmManager(message, .debug, type: type)
     }
 
     public func info(
@@ -35,7 +34,7 @@ class AccuChekLogger {
         let message = "\(file.file) - \(function)#\(line): \(msg)"
         logger.info("\(message, privacy: .public)")
         writeToFile(message, .info)
-        cgmManager?.sendLog("[INFO] \(message)", type: type)
+        writeToCgmManager(message, .info, type: type)
     }
 
     public func warning(
@@ -48,7 +47,7 @@ class AccuChekLogger {
         let message = "\(file.file) - \(function)#\(line): \(msg)"
         logger.warning("\(message, privacy: .public)")
         writeToFile(message, .notice)
-        cgmManager?.sendLog("[WARNING] \(message)", type: type)
+        writeToCgmManager(message, .notice, type: type)
     }
 
     public func error(
@@ -61,7 +60,7 @@ class AccuChekLogger {
         let message = "\(file.file) - \(function)#\(line): \(msg)"
         logger.error("\(message, privacy: .public)")
         writeToFile(message, .error)
-        cgmManager?.sendLog("[ERROR] \(message)", type: type)
+        writeToCgmManager(message, .error, type: type)
     }
 
     func getDebugLogs() -> [URL] {
@@ -70,6 +69,26 @@ class AccuChekLogger {
 
     private func writeToFile(_ msg: String, _ type: OSLogEntryLog.Level) {
         writer.append(msg, level: getLevel(type))
+    }
+    
+    private func writeToCgmManager(_ msg: String, _ level: OSLogEntryLog.Level, type: DeviceLogEntryType) {
+        guard let cgmManager = Self.cgmManager else {
+            return
+        }
+        
+        cgmManager.delegate.notify { delegate in
+            guard let delegate else {
+                return
+            }
+            
+            delegate.deviceManager(
+                cgmManager,
+                logEventForDeviceIdentifier: cgmManager.state.sensorInfo?.serialNumber ?? "",
+                type: type,
+                message: "[\(self.getLevel(level))] \(msg)",
+            ) { _ in }
+        }
+        
     }
 
     private func getLevel(_ type: OSLogEntryLog.Level) -> String {

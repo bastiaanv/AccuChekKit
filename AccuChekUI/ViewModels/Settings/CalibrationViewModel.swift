@@ -3,34 +3,41 @@ import HealthKit
 import SwiftUI
 
 class CalibrationViewModel: ObservableObject {
-    @Published var glucose: UInt16
+    @Published var glucose: UInt16 = 0
     @Published var isLoading = false
     @Published var isError = false
+    @Published var isEditting = false
 
     let allowedGlucoseValuesMgDl = Array(UInt16(60) ... UInt16(400))
     let allowedGlucoseValuesMmolL = Array(UInt16(33) ... UInt16(220))
 
-    private let logger: AccuChekLogger
-    private let cgmManager: AccuChekCgmManager?
+    private let logger  = AccuChekLogger(category: "CalibrationViewModel")
+    private let cgmManager: AccuChekCgmManager
     private let done: () -> Void
     private let unit: HKUnit
     init(cgmManager: AccuChekCgmManager, _ unit: HKUnit, _ done: @escaping () -> Void) {
-        logger = AccuChekLogger(category: "CalibrationViewModel", cgmManager: cgmManager)
         self.cgmManager = cgmManager
         self.unit = unit
         self.done = done
-
-        let defaultGlucose: UInt16 = unit == .milligramsPerDeciliter ? 100 : 56
-        glucose = cgmManager.state.lastGlucoseValue ?? defaultGlucose
+        self.glucose = getStoredGlucose(cgmManager: cgmManager, unit)
     }
 
-    func calibrate() {
-        guard let cgmManager = cgmManager else {
-            logger.warning("No CGMManager...")
-            return
+    private func getStoredGlucose(cgmManager: AccuChekCgmManager, _ unit: HKUnit) -> UInt16 {
+        if let lastGlucose = cgmManager.state.lastGlucoseValue {
+            if unit == .milligramsPerDeciliter {
+                return lastGlucose
+            }
+            
+            let value = HKQuantity(unit: .milligramsPerDeciliter, doubleValue: Double(lastGlucose))
+            return UInt16(value.doubleValue(for: unit) * 10)
         }
-
+        
+        return unit == .milligramsPerDeciliter ? 100 : 56
+    }
+    
+    func calibrate() {
         isError = false
+        isEditting = false
         isLoading = true
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in

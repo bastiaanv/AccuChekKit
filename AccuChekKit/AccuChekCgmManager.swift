@@ -14,10 +14,10 @@ public class AccuChekCgmManager: CGMManager {
     public let shouldSyncToRemoteService: Bool = true
     public let managedDataInterval: TimeInterval? = .hours(3)
 
-    private let delegate = WeakSynchronizedDelegate<CGMManagerDelegate>()
+    let delegate = WeakSynchronizedDelegate<CGMManagerDelegate>()
     private let stateObservers = WeakSynchronizedSet<StateObserver>()
 
-    private let logger: AccuChekLogger
+    private let logger = AccuChekLogger(category: "CgmManager")
     let bluetooth: AccuChekBluetoothManager
     public var state: AccuChekState
     public var rawState: RawStateValue {
@@ -35,10 +35,9 @@ public class AccuChekCgmManager: CGMManager {
     public required init(rawState: RawStateValue) {
         state = AccuChekState(rawValue: rawState)
         bluetooth = AccuChekBluetoothManager()
-        logger = AccuChekLogger(category: "CgmManager", cgmManager: nil)
 
         bluetooth.cgmManager = self
-        logger.cgmManager = self
+        AccuChekLogger.cgmManager = self
     }
 
     public weak var cgmManagerDelegate: CGMManagerDelegate? {
@@ -72,10 +71,10 @@ public class AccuChekCgmManager: CGMManager {
         HKDevice(
             name: state.deviceName,
             manufacturer: "Roche Diabetes Care GmbH",
-            model: nil,
-            hardwareVersion: nil,
-            firmwareVersion: nil,
-            softwareVersion: nil,
+            model: state.sensorInfo?.model,
+            hardwareVersion: state.sensorInfo?.hardwareRevision,
+            firmwareVersion: state.sensorInfo?.firmwareRevision,
+            softwareVersion: state.sensorInfo?.softwareRevision,
             localIdentifier: nil,
             udiDeviceIdentifier: nil
         )
@@ -166,6 +165,12 @@ public class AccuChekCgmManager: CGMManager {
 
         // Ignore response, since no response will be given by CGM
         _ = bluetooth.write(packet: calibratePacket, service: CBUUID.CGM_SERVICE, characteristic: CBUUID.CGM_CONTROL_POINT)
+        
+        delegate.notify { delegate in
+            delegate?.cgmManager(self,hasNew: .newData([
+                NewGlucoseSample(cgmManager: self, calibrationValue: glucose, dateTime: Date.now)
+            ]))
+        }
 
         let getCalibrationPacket = GetCalibrationPacket(recordIndex: 0xFFFF)
         guard bluetooth
@@ -262,16 +267,6 @@ public class AccuChekCgmManager: CGMManager {
                 cgmManagerDelegate.issueAlert($0)
             }
         }
-    }
-
-    func sendLog(_ message: String, type: DeviceLogEntryType = .send) {
-        cgmManagerDelegate?.deviceManager(
-            self,
-            logEventForDeviceIdentifier: state.sensorInfo?.serialNumber ?? "",
-            type: type,
-            message: message,
-            completion: nil
-        )
     }
 }
 

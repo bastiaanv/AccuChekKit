@@ -6,8 +6,6 @@ struct CalibrationView: View {
     @EnvironmentObject private var displayGlucosePreference: DisplayGlucosePreference
     @ObservedObject var viewModel: CalibrationViewModel
 
-    @State var isEdittingGlucose = false
-
     var isMgDl: Bool {
         displayGlucosePreference.unit == .milligramsPerDeciliter
     }
@@ -16,18 +14,19 @@ struct CalibrationView: View {
         VStack {
             List {
                 Section {
-                    Button(action: { withAnimation { isEdittingGlucose.toggle() } }) {
+                    Button(action: { withAnimation { viewModel.isEditting.toggle() } }) {
                         HStack(alignment: .bottom) {
                             Text("Glucose level", comment: "label glucose")
-                                .foregroundColor(isEdittingGlucose ? .blue : .primary)
+                                .foregroundColor(viewModel.isEditting ? .blue : .primary)
                             Spacer()
                             Text(formatGlucose(viewModel.glucose))
-                                .foregroundColor(isEdittingGlucose ? .blue : .secondary)
+                                .foregroundColor(viewModel.isEditting ? .blue : .secondary)
                         }
                     }
+                    .disabled(viewModel.isLoading)
                     .buttonStyle(.plain)
 
-                    if isEdittingGlucose {
+                    if viewModel.isEditting {
                         ResizeablePicker(
                             selection: $viewModel.glucose,
                             data: isMgDl ? viewModel.allowedGlucoseValuesMgDl : viewModel.allowedGlucoseValuesMmolL,
